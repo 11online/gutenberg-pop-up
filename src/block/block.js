@@ -28,6 +28,7 @@ class EditorComponent extends Component {
 
 	render() {
 		const { attributes, setAttributes, className} = this.props;
+		const randomKey = Math.floor(Math.random() * 1000);
 		return (<div>
 				{ this.state.isEditing 
 					?
@@ -52,11 +53,11 @@ class EditorComponent extends Component {
 						</div>
 					: 
 						<div className={ className } onClick={() => this.setState({ isEditing: true })}>
-							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#myModal"+randomKey}>
 								{attributes.buttonText}
 							</button></p>
 
-							<div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div className="modal fade" id={"myModal"+randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div className="modal-dialog" role="document">
 									<div className="modal-content">
 										<div className="modal-header">
@@ -127,13 +128,14 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
 	save: function({ attributes, className }) {
+		const randomKey = Math.floor(Math.random() * 1000);
 		return (
 			<div className={ className }>
-				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#myModal"+randomKey}>
 					{attributes.buttonText}
 				</button></p>
 
-				<div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div className="modal fade" id={"myModal"+randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div className="modal-dialog" role="document">
 						<div className="modal-content">
 							<div className="modal-header">
