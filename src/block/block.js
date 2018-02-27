@@ -12,6 +12,67 @@ import './editor.scss';
 const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 const InnerBlocks = wp.blocks.InnerBlocks;
+const TextControl = wp.components.TextControl;
+const { Component } = wp.element;
+
+class EditorComponent extends Component {
+
+  	
+	constructor() {
+		super( ...arguments );
+		this.state = {
+			isEditing: false
+		}
+	}
+
+	render() {
+		const { attributes, setAttributes, className} = this.props;
+		return (<div>
+				{ this.state.isEditing 
+					?
+						<div>
+							<TextControl
+								label="Button Text:"
+								onChange={ ( value ) => setAttributes( { buttonText: value } ) }
+								value={ attributes.buttonText }
+								placeholder="Button Text"
+							/>
+							<TextControl
+								label="Pop Up Title:"
+								onChange={ ( value ) => setAttributes( { title: value } ) }
+								value={ attributes.title }
+								placeholder="Pop Up Title"
+							/> 
+							<label class="blocks-base-control__label">Pop Up Content:</label>
+							<InnerBlocks/>
+							<a onClick={() => this.setState({ isEditing: false })} style={{cursor: 'pointer'}}>{__('Done Editing')}</a>
+						</div>
+					: 
+						<div className={ className }>
+							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+								{attributes.buttonText}
+							</button></p>
+
+							<div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+								<div className="modal-dialog" role="document">
+									<div className="modal-content">
+										<div className="modal-header">
+											<h4 className="modal-title" id="myModalLabel">{attributes.title}</h4>
+											<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+										</div>
+										<div className="modal-body">
+											<InnerBlocks/>
+										</div>
+									</div>
+								</div>
+							</div>
+							<a onClick={() => this.setState({ isEditing: true })} style={{cursor: 'pointer'}}>{__('Edit')}</a>
+						</div>
+				}
+				
+			</div>);
+	}
+}
 
 /**
  * Register: aa Gutenberg Block.
@@ -31,6 +92,16 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 	title: __( 'Pop Up' ), // Block title.
 	icon: 'external', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	attributes: {
+		title: {
+			type: 'string',
+			default: 'Title'
+		},
+		buttonText: {
+			type: 'string',
+			default: 'Button Text'
+		}
+	},
 	keywords: [
 		__( 'Pop Up' )
 	],
@@ -43,35 +114,7 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	edit: function({ attributes, setAttributes, focus, setFocus, className }) {
-
-		return (
-			<div>
-				Pop Up Content:
-				<InnerBlocks/>
-				Pop Up Preview:
-				<div className={ className }>
-					<button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-						Launch demo modal
-					</button>
-
-					<div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-						<div className="modal-dialog" role="document">
-							<div className="modal-content">
-								<div className="modal-header">
-									<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									<h4 className="modal-title" id="myModalLabel">Modal title</h4>
-								</div>
-								<div className="modal-body">
-									<InnerBlocks/>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
-	},
+	edit: EditorComponent,
 
 	/**
 	 * The save function defines the way in which the different attributes should be combined
@@ -81,19 +124,19 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
-	save: function({ attributes, setAttributes, focus, setFocus, className }) {
+	save: function({ attributes, className }) {
 		return (
 			<div className={ className }>
-				<button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
-					Launch demo modal
-				</button>
+				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+					{attributes.buttonText}
+				</button></p>
 
 				<div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div className="modal-dialog" role="document">
 						<div className="modal-content">
 							<div className="modal-header">
+								<h4 className="modal-title" id="myModalLabel">{attributes.title}</h4>
 								<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								<h4 className="modal-title" id="myModalLabel">Modal title</h4>
 							</div>
 							<div className="modal-body">
 								<InnerBlocks.Content/>

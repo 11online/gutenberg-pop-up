@@ -23,13 +23,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 function gutenberg_pop_up_block_assets() {
 	wp_enqueue_script(
 		'gutenberg_pop_up-block-bootstrap-js', // Handle.
-		plugins_url( '/bootstrap.min.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
+		plugins_url( '/bootstrap-modal.min.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
 		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
 	);
 	wp_enqueue_style(
 		'gutenberg_pop_up-block-editor-bootstrap-css', // Handle.
-		plugins_url( 'bootstrap.css', dirname( __FILE__ ) ), // Block editor CSS.
+		plugins_url( 'bootstrap-modal.css', dirname( __FILE__ ) ), // Block editor CSS.
 		array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' ) // Version: filemtime — Gets file modification time.
 	);
@@ -57,14 +57,14 @@ function gutenberg_pop_up_editor_assets() {
 	);
 	wp_enqueue_script(
 		'gutenberg_pop_up-block-bootstrap-js', // Handle.
-		plugins_url( '/bootstrap.min.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
+		plugins_url( '/bootstrap-modal.min.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
 		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
 	);
 	// Styles.
 	wp_enqueue_style(
 		'gutenberg_pop_up-block-editor-bootstrap-css', // Handle.
-		plugins_url( 'bootstrap.css', dirname( __FILE__ ) ), // Block editor CSS.
+		plugins_url( 'bootstrap-modal.css', dirname( __FILE__ ) ), // Block editor CSS.
 		array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' ) // Version: filemtime — Gets file modification time.
 	);
