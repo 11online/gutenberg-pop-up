@@ -26,7 +26,7 @@ class EditorComponent extends Component {
 		}
 	}
 
-	onComponentDidMount() {
+	componentDidMount() {
 		const randomKey = "myModal" + Math.floor(Math.random() * 1000);
 		this.props.setAttributes({randomKey: randomKey});
 	}
