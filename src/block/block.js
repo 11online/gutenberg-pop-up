@@ -13,6 +13,7 @@ const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 const InnerBlocks = wp.blocks.InnerBlocks;
 const TextControl = wp.components.TextControl;
+const IconButton = wp.components.IconButton;
 const { Component } = wp.element;
 
 class EditorComponent extends Component {
@@ -45,10 +46,12 @@ class EditorComponent extends Component {
 							/> 
 							<label class="blocks-base-control__label">Pop Up Content:</label>
 							<InnerBlocks/>
-							<a onClick={() => this.setState({ isEditing: false })} style={{cursor: 'pointer'}}>{__('Done Editing')}</a>
+							<div style={{textAlign: 'right'}}>
+								<IconButton style={{display: 'inline-block'}} icon="editor-break" label={ __( 'Apply' ) } type="submit" onClick={(event) => { event.preventDefault(); this.setState({ isEditing: false });}}/>
+							</div>
 						</div>
 					: 
-						<div className={ className }>
+						<div className={ className } onClick={() => this.setState({ isEditing: true })}>
 							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
 								{attributes.buttonText}
 							</button></p>
@@ -66,7 +69,6 @@ class EditorComponent extends Component {
 									</div>
 								</div>
 							</div>
-							<a onClick={() => this.setState({ isEditing: true })} style={{cursor: 'pointer'}}>{__('Edit')}</a>
 						</div>
 				}
 				
