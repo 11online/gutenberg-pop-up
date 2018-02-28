@@ -14,6 +14,7 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
 const InnerBlocks = wp.blocks.InnerBlocks;
 const TextControl = wp.components.TextControl;
 const SelectControl = wp.components.SelectControl;
+const ToggleControl = wp.components.ToggleControl;
 const IconButton = wp.components.IconButton;
 const { Component } = wp.element;
 
@@ -58,6 +59,11 @@ class EditorComponent extends Component {
 									{ value: 'sm', label: 'Small' },
 								]}
 								onChange={ (value) => setAttributes( { size: value } ) }
+							/>
+							<ToggleControl
+								label="Fade"
+								checked={ !! attributes.fade }
+								onChange={ () => setAttributes( { fade: ! attributes.fade } ) }
 							/>
 							<label class="blocks-base-control__label">Pop Up Content:</label>
 							<InnerBlocks/>
@@ -124,7 +130,11 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 		},
 		size: {
 			type: 'string',
-			default: 'sm'
+			default: 'lg'
+		},
+		fade: {
+			type: 'boolean',
+			default: true
 		},
 	},
 	keywords: [
