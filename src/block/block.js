@@ -16,6 +16,7 @@ const TextControl = wp.components.TextControl;
 const SelectControl = wp.components.SelectControl;
 const IconButton = wp.components.IconButton;
 const { Component } = wp.element;
+const InspectorControls = wp.blocks.InspectorControls;
 
 class EditorComponent extends Component {
 
@@ -34,7 +35,27 @@ class EditorComponent extends Component {
 
 	render() {
 		const { attributes, setAttributes, className} = this.props;
-		return (<div>
+
+		const controls = this.state.isEditing ?
+		 (
+			 <InspectorControls>
+				<SelectControl
+					label="Size"
+					value={ attributes.size }
+					options={[
+						{ value: ' modal-lg', label: 'Large' },
+						{ value: '', label: 'Medium' },
+						{ value: ' modal-sm', label: 'Small' },
+					]}
+					onChange={ (value) => setAttributes( { size: value } ) }
+				/>
+			</InspectorControls>
+		) : null;
+
+		return [
+			controls,
+			(
+				<div>
 				{ this.state.isEditing
 					?
 						<div>
@@ -50,15 +71,6 @@ class EditorComponent extends Component {
 								value={ attributes.title }
 								placeholder="Pop Up Title"
 							/>
-							<SelectControl
-								label="Size"
-								value={ attributes.size }
-								options={[
-									{ value: 'lg', label: 'Large' },
-									{ value: 'sm', label: 'Small' },
-								]}
-								onChange={ (value) => setAttributes( { size: value } ) }
-							/>
 							<label class="blocks-base-control__label">Pop Up Content:</label>
 							<InnerBlocks/>
 							<div style={{textAlign: 'right'}}>
@@ -72,7 +84,7 @@ class EditorComponent extends Component {
 							</button></p>
 
 							<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-								<div className={ "modal-dialog modal-"+attributes.size } role="document">
+								<div className={ "modal-dialog"+attributes.size } role="document">
 									<div className="modal-content">
 										<div className="modal-header">
 											<h4 className="modal-title" id="myModalLabel">{attributes.title}</h4>
@@ -87,7 +99,8 @@ class EditorComponent extends Component {
 						</div>
 				}
 
-			</div>);
+			</div>)
+		];
 	}
 }
 
@@ -124,7 +137,7 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 		},
 		size: {
 			type: 'string',
-			default: 'sm'
+			default: ''
 		},
 	},
 	keywords: [
@@ -159,7 +172,7 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 				</button></p>
 
 				<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-					<div className={ "modal-dialog modal-"+attributes.size } role="document">
+					<div className={ "modal-dialog"+attributes.size } role="document">
 						<div className="modal-content">
 							<div className="modal-header">
 								<h4 className="modal-title" id="myModalLabel">{attributes.title}</h4>
