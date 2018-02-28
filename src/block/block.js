@@ -17,6 +17,7 @@ const SelectControl = wp.components.SelectControl;
 const IconButton = wp.components.IconButton;
 const { Component } = wp.element;
 const InspectorControls = wp.blocks.InspectorControls;
+const ColorPalette = wp.blocks.ColorPalette;
 
 class EditorComponent extends Component {
 
@@ -34,13 +35,13 @@ class EditorComponent extends Component {
 	}
 
 	render() {
-		const { attributes, setAttributes, className} = this.props;
+		const { attributes, setAttributes, className, focus} = this.props;
 
-		const controls = this.state.isEditing ?
+		const controls = focus ?
 		 (
 			 <InspectorControls>
 				<SelectControl
-					label="Size"
+					label={ __("Size: ") }
 					value={ attributes.size }
 					options={[
 						{ value: ' modal-lg', label: 'Large' },
@@ -48,6 +49,18 @@ class EditorComponent extends Component {
 						{ value: ' modal-sm', label: 'Small' },
 					]}
 					onChange={ (value) => setAttributes( { size: value } ) }
+				/>
+				{ __("Background Color: ") }
+				<ColorPalette
+					onChange={ ( value ) => setAttributes( { backgroundColor: value} ) }
+				/>
+				{ __("Title Color: ") }
+				<ColorPalette
+					onChange={ ( value ) => setAttributes( { titleColor: value} ) }
+				/>
+				{ __("Text Color: ") }
+				<ColorPalette
+					onChange={ ( value ) => setAttributes( { textColor: value} ) }
 				/>
 			</InspectorControls>
 		) : null;
@@ -85,9 +98,9 @@ class EditorComponent extends Component {
 
 							<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div className={ "modal-dialog"+attributes.size } role="document">
-									<div className="modal-content">
+									<div className="modal-content" style={{backgroundColor: attributes.backgroundColor, color: attributes.textColor}}>
 										<div className="modal-header">
-											<h4 className="modal-title" id="myModalLabel">{attributes.title}</h4>
+											<h4 className="modal-title" id="myModalLabel" style={{color: attributes.titleColor}}>{attributes.title}</h4>
 											<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 										</div>
 										<div className="modal-body">
@@ -139,6 +152,18 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 			type: 'string',
 			default: ''
 		},
+		backgroundColor: {
+			type: 'string',
+			default: ''
+		},
+		textColor: {
+			type: 'string',
+			default: ''
+		},
+		titleColor: {
+			type: 'string',
+			default: ''
+		},
 	},
 	keywords: [
 		__( 'Pop Up' )
@@ -171,11 +196,11 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 					{attributes.buttonText}
 				</button></p>
 
-				<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div className="modal fade" id={attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div className={ "modal-dialog"+attributes.size } role="document">
-						<div className="modal-content">
+						<div className="modal-content" style={{backgroundColor: attributes.backgroundColor}}>
 							<div className="modal-header">
-								<h4 className="modal-title" id="myModalLabel">{attributes.title}</h4>
+								<h4 className="modal-title" id="myModalLabel" style={{color: attributes.titleColor}}>{attributes.title}</h4>
 								<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							</div>
 							<div className="modal-body">
