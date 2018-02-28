@@ -25,7 +25,8 @@ class EditorComponent extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
-			isEditing: false
+			isEditing: false,
+			colorSelector: 'backgroundColor',
 		}
 	}
 
@@ -33,6 +34,12 @@ class EditorComponent extends Component {
 		const randomKey = "myModal" + Math.floor(Math.random() * 1000);
 		this.props.setAttributes({randomKey: randomKey});
 	}
+
+	handleChildClick(e) {
+		e.stopPropagation();
+		this.setState( { colorSelector: e.target.className } );
+		console.log(e.target.className);
+}
 
 	render() {
 		const { attributes, setAttributes, className, focus} = this.props;
@@ -50,18 +57,45 @@ class EditorComponent extends Component {
 					]}
 					onChange={ (value) => setAttributes( { size: value } ) }
 				/>
-				{ __("Background Color: ") }
-				<ColorPalette
-					onChange={ ( value ) => setAttributes( { backgroundColor: value} ) }
+				<SelectControl
+					label={ __("Color: ") }
+					value={ this.state.colorSelector }
+					options={[
+						{ value: 'backgroundColor', label: __("Background") },
+						{ value: 'titleColor', label: __("Title") },
+						{ value: 'textColor', label: __("Content") },
+					]}
+					onChange={ (value) => this.setState( { colorSelector: value } ) }
 				/>
-				{ __("Title Color: ") }
 				<ColorPalette
-					onChange={ ( value ) => setAttributes( { titleColor: value} ) }
+					onChange={ ( value ) => {
+						switch (this.state.colorSelector) {
+						  case 'backgroundColor':
+						    setAttributes( { backgroundColor: value} );
+						    break;
+						  case 'titleColor':
+								setAttributes( { titleColor: value} );
+								break;
+						  case 'textColor':
+						    setAttributes( { textColor: value} );
+						    break;
+							}
+						}
+					}
 				/>
-				{ __("Text Color: ") }
-				<ColorPalette
-					onChange={ ( value ) => setAttributes( { textColor: value} ) }
-				/>
+				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'backgroundColor' } ) } style={{
+						borderRadius: '6px',
+						border: "1px solid rgba(0, 0, 0, 0.2)",
+						width: "75px",
+						height: "60px",
+						position: "relative",
+						left: "33%",
+						textAlign: 'center',
+						backgroundColor: attributes.backgroundColor,
+					}}>
+					<h3 className="titleColor" style={{ color: attributes.titleColor }} onClick={ (e) => this.handleChildClick(e) }>Title</h3>
+					<p className="textColor" style={{ color: attributes.textColor }} onClick={ (e) => this.handleChildClick(e) }>Content</p>
+				</div>
 			</InspectorControls>
 		) : null;
 
