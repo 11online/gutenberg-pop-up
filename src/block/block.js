@@ -13,12 +13,13 @@ const { __ } = wp.i18n; // Import __() from wp.i18n
 const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
 const InnerBlocks = wp.blocks.InnerBlocks;
 const TextControl = wp.components.TextControl;
+const SelectControl = wp.components.SelectControl;
 const IconButton = wp.components.IconButton;
 const { Component } = wp.element;
 
 class EditorComponent extends Component {
 
-  	
+
 	constructor() {
 		super( ...arguments );
 		this.state = {
@@ -34,7 +35,7 @@ class EditorComponent extends Component {
 	render() {
 		const { attributes, setAttributes, className} = this.props;
 		return (<div>
-				{ this.state.isEditing 
+				{ this.state.isEditing
 					?
 						<div>
 							<TextControl
@@ -48,21 +49,30 @@ class EditorComponent extends Component {
 								onChange={ ( value ) => setAttributes( { title: value } ) }
 								value={ attributes.title }
 								placeholder="Pop Up Title"
-							/> 
+							/>
+							<SelectControl
+								label="Size"
+								value={ attributes.size }
+								options={[
+									{ value: 'lg', label: 'Large' },
+									{ value: 'sm', label: 'Small' },
+								]}
+								onChange={ (value) => setAttributes( { size: value } ) }
+							/>
 							<label class="blocks-base-control__label">Pop Up Content:</label>
 							<InnerBlocks/>
 							<div style={{textAlign: 'right'}}>
 								<IconButton style={{display: 'inline-block'}} icon="editor-break" label={ __( 'Apply' ) } type="submit" onClick={(event) => { event.preventDefault(); this.setState({ isEditing: false });}}/>
 							</div>
 						</div>
-					: 
+					:
 						<div className={ className } onClick={() => this.setState({ isEditing: true })}>
 							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
 								{attributes.buttonText}
 							</button></p>
 
 							<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-								<div className="modal-dialog" role="document">
+								<div className={ "modal-dialog modal-"+attributes.size } role="document">
 									<div className="modal-content">
 										<div className="modal-header">
 											<h4 className="modal-title" id="myModalLabel">{attributes.title}</h4>
@@ -76,7 +86,7 @@ class EditorComponent extends Component {
 							</div>
 						</div>
 				}
-				
+
 			</div>);
 	}
 }
@@ -111,7 +121,11 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 		randomKey: {
 			type: 'string',
 			default: 'myModal'
-		}
+		},
+		size: {
+			type: 'string',
+			default: 'sm'
+		},
 	},
 	keywords: [
 		__( 'Pop Up' )
@@ -135,6 +149,8 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 	 *
 	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
 	 */
+
+
 	save: function({ attributes, className }) {
 		return (
 			<div className={ className }>
@@ -143,7 +159,7 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 				</button></p>
 
 				<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-					<div className="modal-dialog" role="document">
+					<div className={ "modal-dialog modal-"+attributes.size } role="document">
 						<div className="modal-content">
 							<div className="modal-header">
 								<h4 className="modal-title" id="myModalLabel">{attributes.title}</h4>
