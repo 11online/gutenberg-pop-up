@@ -14,6 +14,7 @@ const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.b
 const InnerBlocks = wp.blocks.InnerBlocks;
 const TextControl = wp.components.TextControl;
 const SelectControl = wp.components.SelectControl;
+const RangeControl = wp.components.RangeControl;
 const IconButton = wp.components.IconButton;
 const { Component } = wp.element;
 const InspectorControls = wp.blocks.InspectorControls;
@@ -83,8 +84,15 @@ class EditorComponent extends Component {
 						}
 					}
 				/>
+				<RangeControl
+				label={ __("Border: ") }
+				value={ (attributes.borderRadius / 3) }
+				min={ 0 }
+				max={ 5 }
+				onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
+				/>
 				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'backgroundColor' } ) } style={{
-						borderRadius: '6px',
+						borderRadius: attributes.borderRadius,
 						border: "1px solid rgba(0, 0, 0, 0.2)",
 						width: "75px",
 						height: "60px",
@@ -132,7 +140,7 @@ class EditorComponent extends Component {
 
 							<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div className={ "modal-dialog"+attributes.size } role="document">
-									<div className="modal-content" style={{backgroundColor: attributes.backgroundColor, color: attributes.textColor}}>
+									<div className="modal-content" style={{backgroundColor: attributes.backgroundColor, color: attributes.textColor, borderRadius: attributes.borderRadius }}>
 										<div className="modal-header">
 											<h4 className="modal-title" id="myModalLabel" style={{color: attributes.titleColor}}>{attributes.title}</h4>
 											<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -198,6 +206,10 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 			type: 'string',
 			default: ''
 		},
+		borderRadius: {
+			type: 'string',
+			default: 6
+		}
 	},
 	keywords: [
 		__( 'Pop Up' )
@@ -232,7 +244,7 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 
 				<div className="modal fade" id={attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div className={ "modal-dialog"+attributes.size } role="document">
-						<div className="modal-content" style={{backgroundColor: attributes.backgroundColor}}>
+						<div className="modal-content" style={{backgroundColor: attributes.backgroundColor, borderRadius: attributes.borderRadius}}>
 							<div className="modal-header">
 								<h4 className="modal-title" id="myModalLabel" style={{color: attributes.titleColor}}>{attributes.title}</h4>
 								<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
