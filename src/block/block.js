@@ -92,6 +92,24 @@ class EditorComponent extends Component {
 					onChange={ (value) => setAttributes( { size: value } ) }
 				/>
 				<SelectControl
+					label={ __("Animation: ") }
+					value={ attributes.animation }
+					options={[
+						{ value: 'fadeIn', label: __("Fade In") },
+						{ value: 'bounce', label: __("Bounce") },
+						{ value: 'shake', label: __("Shake") },
+						{ value: 'flipBounceYIn', label: __("Flip") },
+						{ value: 'shrinkIn', label: __("Zoom Out") },
+						{ value: 'expandIn', label: __("Zoom In") },
+						{ value: 'slideDownIn', label: __("Slide In") },
+						{ value: 'perspectiveLeftIn', label: __("Perspective In") },
+						{ value: 'pulse', label: __("Pulse") },
+						{ value: 'swing', label: __("Swing") },
+						{ value: 'tada', label: __("Tada") }
+					]}
+					onChange={ (value) => setAttributes( { animation: value } ) }
+				/>
+				<SelectControl
 					label={ __("Color: ") }
 					value={ this.state.colorSelector }
 					options={[
@@ -175,11 +193,11 @@ class EditorComponent extends Component {
 						</div>
 					:
 						<div className={ className } onClick={() => this.setState({ isEditing: true })}>
-							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#myModal"+attributes.randomKey}>
+							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
 								{attributes.buttonText}
 							</button></p>
 
-							<div className="modal fade" id={"myModal"+attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div className="modal" data-easein={attributes.animation} id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div className={ "modal-dialog"+attributes.size } role="document">
 									<div className="modal-content" style={ styles.modal.modalContent }>
 										<div className="modal-header" style={ styles.modal.modalHeader }>
@@ -254,6 +272,10 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 		borderRadius: {
 			type: 'number',
 			default: 6
+		},
+		animation: {
+			type: 'string',
+			default: 'fadeIn'
 		}
 	},
 	keywords: [
@@ -301,11 +323,11 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 
 		return (
 			<div className={ className }>
-				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#myModal"+attributes.randomKey}>
+				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
 					{attributes.buttonText}
 				</button></p>
 
-				<div className="modal fade" id={"#myModal"+attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div className="modal" data-easein={attributes.animation} id={attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div className={ "modal-dialog"+attributes.size } role="document">
 						<div className="modal-content" style={ styles.modal.modalContent }>
 							<div className="modal-header" style={ styles.modal.modalHeader }>

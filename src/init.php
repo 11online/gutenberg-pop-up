@@ -29,13 +29,18 @@ function gutenberg_pop_up_block_assets() {
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity',
-		plugins_url( '/velocity.js', dirname(__FILE__) ),
+		"//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js",
 		array( 'jquery' )
+	);
+	wp_enqueue_script(
+		'block-party-pop-up-velocity-ui',
+		"//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.min.js",
+		array( 'jquery', 'block-party-pop-up-velocity' )
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-animations',
 		plugins_url( '/animations.js', dirname(__FILE__) ),
-		array( 'jquery', 'block-party-pop-up-velocity' )
+		array( 'jquery', 'block-party-pop-up-velocity', 'block-party-pop-up-velocity-ui' )
 	);
 	wp_enqueue_style(
 		'gutenberg_pop_up-block-editor-bootstrap-css', // Handle.
