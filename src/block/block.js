@@ -101,7 +101,7 @@ class EditorComponent extends Component {
 						textAlign: 'center',
 						backgroundColor: attributes.backgroundColor,
 					}}>
-					<h3 className="titleColor" style={{ color: attributes.titleColor }} onClick={ (e) => this.handleChildClick(e) }>Title</h3>
+					<h3 className="titleColor" style={{ color: attributes.titleColor, borderBottom: "1px solid #e5e5e5" }} onClick={ (e) => this.handleChildClick(e) }>Title</h3>
 					<p className="textColor" style={{ color: attributes.textColor }} onClick={ (e) => this.handleChildClick(e) }>Content</p>
 				</div>
 			</InspectorControls>
