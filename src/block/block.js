@@ -45,6 +45,25 @@ class EditorComponent extends Component {
 	render() {
 		const { attributes, setAttributes, className, focus} = this.props;
 
+		let previewBox = {
+			styles: {
+				titleBackgroundColor: {
+					backgroundColor: attributes.titleBackgroundColor,
+					borderBottom: '1px solid #e5e5e5',
+					height: "40%",
+					borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0`,
+				},
+				titleColor: {
+					color: attributes.titleColor,
+					width: "50px",
+					padding: "2px",
+				},
+				textColor: {
+					color: attributes.textColor,
+				}
+			}
+		}
+
 		const controls = focus ?
 		 (
 			 <InspectorControls>
@@ -107,10 +126,10 @@ class EditorComponent extends Component {
 						boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
 						marginBottom: "3px",
 					}}>
-					<div className="titleBackgroundColor" style={{ backgroundColor: attributes.titleBackgroundColor, borderBottom: '1px solid #e5e5e5', height: "40%", borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0` }} onClick={ (e) => this.handleChildClick(e) }>
-						<h3 className="titleColor" style={{ color: attributes.titleColor, width: "0", padding: "2px"}} onClick={ (e) => this.handleChildClick(e) }>Title</h3>
+					<div className="titleBackgroundColor" style={ previewBox.styles.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
+						<h3 className="titleColor" style={ previewBox.styles.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h3>
 					</div>
-					<p className="textColor" style={{ color: attributes.textColor }} onClick={ (e) => this.handleChildClick(e) }>Content</p>
+					<p className="textColor" style={ previewBox.styles.textColor } onClick={ (e) => this.handleChildClick(e) }>Content</p>
 				</div>
 			</InspectorControls>
 		) : null;
