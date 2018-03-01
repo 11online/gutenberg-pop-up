@@ -39,14 +39,13 @@ class EditorComponent extends Component {
 	handleChildClick(e) {
 		e.stopPropagation();
 		this.setState( { colorSelector: e.target.className } );
-		console.log(e.target.className);
 }
 
 	render() {
 		const { attributes, setAttributes, className, focus} = this.props;
 
-		let previewBox = {
-			styles: {
+		let styles = {
+			previewBox: {
 				titleBackgroundColor: {
 					backgroundColor: attributes.titleBackgroundColor,
 					borderBottom: '1px solid #e5e5e5',
@@ -55,13 +54,27 @@ class EditorComponent extends Component {
 				},
 				titleColor: {
 					color: attributes.titleColor,
-					width: "50px",
+					width: "50%",
 					padding: "2px",
 				},
 				textColor: {
 					color: attributes.textColor,
-				}
-			}
+				},
+			},
+			modal: {
+				modalContent: {
+					backgroundColor: attributes.textBackgroundColor,
+					color: attributes.textColor,
+					borderRadius: attributes.borderRadius,
+				},
+				modalHeader: {
+					backgroundColor: attributes.titleBackgroundColor,
+					borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0`,
+				},
+				modalTitle: {
+					color: attributes.titleColor,
+				},
+			},
 		}
 
 		const controls = focus ?
@@ -126,10 +139,10 @@ class EditorComponent extends Component {
 						boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
 						marginBottom: "3px",
 					}}>
-					<div className="titleBackgroundColor" style={ previewBox.styles.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
-						<h3 className="titleColor" style={ previewBox.styles.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h3>
+					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
+						<h3 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h3>
 					</div>
-					<p className="textColor" style={ previewBox.styles.textColor } onClick={ (e) => this.handleChildClick(e) }>Content</p>
+					<p className="textColor" style={ styles.previewBox.textColor } onClick={ (e) => this.handleChildClick(e) }>Content</p>
 				</div>
 			</InspectorControls>
 		) : null;
@@ -167,9 +180,9 @@ class EditorComponent extends Component {
 
 							<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div className={ "modal-dialog"+attributes.size } role="document">
-									<div className="modal-content" style={{backgroundColor: attributes.textBackgroundColor, color: attributes.textColor, borderRadius: attributes.borderRadius }}>
-										<div className="modal-header" style={{ backgroundColor: attributes.titleBackgroundColor, borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0` }}>
-											<h4 className="modal-title" id="myModalLabel" style={{color: attributes.titleColor}}>{attributes.title}</h4>
+									<div className="modal-content" style={ styles.modal.modalContent }>
+										<div className="modal-header" style={ styles.modal.modalHeader }>
+											<h4 className="modal-title" id="myModalLabel" style={ styles.modal.modalTitle }>{attributes.title}</h4>
 											<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 										</div>
 										<div className="modal-body">
