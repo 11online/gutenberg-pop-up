@@ -175,11 +175,11 @@ class EditorComponent extends Component {
 						</div>
 					:
 						<div className={ className } onClick={() => this.setState({ isEditing: true })}>
-							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
+							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#myModal"+attributes.randomKey}>
 								{attributes.buttonText}
 							</button></p>
 
-							<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div className="modal fade" id={"myModal"+attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div className={ "modal-dialog"+attributes.size } role="document">
 									<div className="modal-content" style={ styles.modal.modalContent }>
 										<div className="modal-header" style={ styles.modal.modalHeader }>
@@ -301,11 +301,11 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 
 		return (
 			<div className={ className }>
-				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
+				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#myModal"+attributes.randomKey}>
 					{attributes.buttonText}
 				</button></p>
 
-				<div className="modal fade" id={attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div className="modal fade" id={"#myModal"+attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div className={ "modal-dialog"+attributes.size } role="document">
 						<div className="modal-content" style={ styles.modal.modalContent }>
 							<div className="modal-header" style={ styles.modal.modalHeader }>
