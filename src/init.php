@@ -27,6 +27,21 @@ function gutenberg_pop_up_block_assets() {
 		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
 	);
+	wp_enqueue_script(
+		'block-party-pop-up-velocity',
+		"//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js",
+		array( 'jquery' )
+	);
+	wp_enqueue_script(
+		'block-party-pop-up-velocity-ui',
+		"//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.min.js",
+		array( 'jquery', 'block-party-pop-up-velocity' )
+	);
+	wp_enqueue_script(
+		'block-party-pop-up-animations',
+		plugins_url( '/animations.js', dirname(__FILE__) ),
+		array( 'jquery', 'block-party-pop-up-velocity', 'block-party-pop-up-velocity-ui' )
+	);
 	wp_enqueue_style(
 		'gutenberg_pop_up-block-editor-bootstrap-css', // Handle.
 		plugins_url( 'bootstrap-modal.css', dirname( __FILE__ ) ), // Block editor CSS.
@@ -60,6 +75,16 @@ function gutenberg_pop_up_editor_assets() {
 		plugins_url( '/bootstrap-modal.min.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
 		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
+	);
+	wp_enqueue_script(
+		'block-party-pop-up-velocity',
+		plugins_url( '/velocity.js', dirname(__FILE__) ),
+		array( 'jquery' )
+	);
+	wp_enqueue_script(
+		'block-party-pop-up-animations',
+		plugins_url( '/animations.js', dirname(__FILE__) ),
+		array( 'jquery', 'block-party-pop-up-velocity' )
 	);
 	// Styles.
 	wp_enqueue_style(
