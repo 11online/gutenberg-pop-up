@@ -20,6 +20,7 @@ const { Component } = wp.element;
 const InspectorControls = wp.blocks.InspectorControls;
 const ColorPalette = wp.blocks.ColorPalette;
 
+
 class EditorComponent extends Component {
 
 
@@ -44,7 +45,7 @@ class EditorComponent extends Component {
 	render() {
 		const { attributes, setAttributes, className, focus} = this.props;
 
-		let styles = {
+		const styles = {
 			previewBox: {
 				titleBackgroundColor: {
 					backgroundColor: attributes.titleBackgroundColor,
@@ -280,6 +281,24 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 
 
 	save: function({ attributes, className }) {
+
+		const styles = {
+			modal: {
+				modalContent: {
+					backgroundColor: attributes.textBackgroundColor,
+					color: attributes.textColor,
+					borderRadius: attributes.borderRadius,
+				},
+				modalHeader: {
+					backgroundColor: attributes.titleBackgroundColor,
+					borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0`,
+				},
+				modalTitle: {
+					color: attributes.titleColor,
+				},
+			},
+		}
+
 		return (
 			<div className={ className }>
 				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
@@ -288,9 +307,9 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 
 				<div className="modal fade" id={attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div className={ "modal-dialog"+attributes.size } role="document">
-						<div className="modal-content" style={{ backgroundColor: attributes.textBackgroundColor, borderRadius: attributes.borderRadius }}>
-							<div className="modal-header" style={{ backgroundColor: attributes.titleBackgroundColor, borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0` }}>
-								<h4 className="modal-title" id="myModalLabel" style={{color: attributes.titleColor}}>{attributes.title}</h4>
+						<div className="modal-content" style={ styles.modal.modalContent }>
+							<div className="modal-header" style={ styles.modal.modalHeader }>
+								<h4 className="modal-title" id="myModalLabel" style={ styles.modal.modalTitle }>{attributes.title}</h4>
 								<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							</div>
 							<div className="modal-body">
