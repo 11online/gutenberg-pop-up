@@ -27,7 +27,7 @@ class EditorComponent extends Component {
 		super( ...arguments );
 		this.state = {
 			isEditing: false,
-			colorSelector: 'backgroundColor',
+			colorSelector: 'titleColor',
 		}
 	}
 
@@ -62,18 +62,22 @@ class EditorComponent extends Component {
 					label={ __("Color: ") }
 					value={ this.state.colorSelector }
 					options={[
-						{ value: 'backgroundColor', label: __("Background") },
 						{ value: 'titleColor', label: __("Title") },
+						{ value: 'titleBackgroundColor', label: __("Title Background") },
 						{ value: 'textColor', label: __("Content") },
+						{ value: 'textBackgroundColor', label: __("Content Background") },
 					]}
 					onChange={ (value) => this.setState( { colorSelector: value } ) }
 				/>
 				<ColorPalette
 					onChange={ ( value ) => {
 						switch (this.state.colorSelector) {
-						  case 'backgroundColor':
-						    setAttributes( { backgroundColor: value} );
+						  case 'textBackgroundColor':
+						    setAttributes( { textBackgroundColor: value} );
 						    break;
+							case 'titleBackgroundColor':
+							  setAttributes( { titleBackgroundColor: value} );
+							  break;
 						  case 'titleColor':
 								setAttributes( { titleColor: value} );
 								break;
@@ -91,7 +95,7 @@ class EditorComponent extends Component {
 				max={ 5 }
 				onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
 				/>
-				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'backgroundColor' } ) } style={{
+				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={{
 						borderRadius: attributes.borderRadius,
 						border: "1px solid rgba(0, 0, 0, 0.2)",
 						width: "75px",
@@ -99,9 +103,13 @@ class EditorComponent extends Component {
 						position: "relative",
 						left: "33%",
 						textAlign: 'center',
-						backgroundColor: attributes.backgroundColor,
+						backgroundColor: attributes.textBackgroundColor,
+						boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
+						marginBottom: "3px",
 					}}>
-					<h3 className="titleColor" style={{ color: attributes.titleColor, borderBottom: "1px solid #e5e5e5" }} onClick={ (e) => this.handleChildClick(e) }>Title</h3>
+					<div className="titleBackgroundColor" style={{ backgroundColor: attributes.titleBackgroundColor, borderBottom: '1px solid #e5e5e5', height: "40%", borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0` }} onClick={ (e) => this.handleChildClick(e) }>
+						<h3 className="titleColor" style={{ color: attributes.titleColor, width: "0", padding: "2px"}} onClick={ (e) => this.handleChildClick(e) }>Title</h3>
+					</div>
 					<p className="textColor" style={{ color: attributes.textColor }} onClick={ (e) => this.handleChildClick(e) }>Content</p>
 				</div>
 			</InspectorControls>
@@ -140,8 +148,8 @@ class EditorComponent extends Component {
 
 							<div className="modal fade" id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div className={ "modal-dialog"+attributes.size } role="document">
-									<div className="modal-content" style={{backgroundColor: attributes.backgroundColor, color: attributes.textColor, borderRadius: attributes.borderRadius }}>
-										<div className="modal-header">
+									<div className="modal-content" style={{backgroundColor: attributes.textBackgroundColor, color: attributes.textColor, borderRadius: attributes.borderRadius }}>
+										<div className="modal-header" style={{ backgroundColor: attributes.titleBackgroundColor, borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0` }}>
 											<h4 className="modal-title" id="myModalLabel" style={{color: attributes.titleColor}}>{attributes.title}</h4>
 											<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 										</div>
@@ -194,7 +202,11 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 			type: 'string',
 			default: ''
 		},
-		backgroundColor: {
+		textBackgroundColor: {
+			type: 'string',
+			default: ''
+		},
+		titleBackgroundColor: {
 			type: 'string',
 			default: ''
 		},
@@ -244,8 +256,8 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 
 				<div className="modal fade" id={attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 					<div className={ "modal-dialog"+attributes.size } role="document">
-						<div className="modal-content" style={{backgroundColor: attributes.backgroundColor, borderRadius: attributes.borderRadius}}>
-							<div className="modal-header">
+						<div className="modal-content" style={{ backgroundColor: attributes.textBackgroundColor, borderRadius: attributes.borderRadius }}>
+							<div className="modal-header" style={{ backgroundColor: attributes.titleBackgroundColor, borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0` }}>
 								<h4 className="modal-title" id="myModalLabel" style={{color: attributes.titleColor}}>{attributes.title}</h4>
 								<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 							</div>
