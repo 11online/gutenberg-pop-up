@@ -219,7 +219,7 @@ registerBlockType( 'cgb/block-gutenberg-pop-up', {
 			default: ''
 		},
 		borderRadius: {
-			type: 'string',
+			type: 'number',
 			default: 6
 		}
 	},
