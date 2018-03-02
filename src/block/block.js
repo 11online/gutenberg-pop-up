@@ -197,7 +197,7 @@ class EditorComponent extends Component {
 								{attributes.buttonText}
 							</button></p>
 
-							<div className="modal" data-easein={attributes.animation} id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+							<div className="modal fade" data-easein={attributes.animation} id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 								<div className={ "modal-dialog"+attributes.size } role="document">
 									<div className="modal-content" style={ styles.modal.modalContent }>
 										<div className="modal-header" style={ styles.modal.modalHeader }>

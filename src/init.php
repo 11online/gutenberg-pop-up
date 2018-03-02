@@ -70,29 +70,6 @@ function gutenberg_pop_up_editor_assets() {
 		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
 		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
 	);
-	wp_enqueue_script(
-		'gutenberg_pop_up-block-bootstrap-js', // Handle.
-		plugins_url( '/bootstrap-modal.min.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
-		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
-		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
-	);
-	wp_enqueue_script(
-		'block-party-pop-up-velocity',
-		plugins_url( '/velocity.js', dirname(__FILE__) ),
-		array( 'jquery' )
-	);
-	wp_enqueue_script(
-		'block-party-pop-up-animations',
-		plugins_url( '/animations.js', dirname(__FILE__) ),
-		array( 'jquery', 'block-party-pop-up-velocity' )
-	);
-	// Styles.
-	wp_enqueue_style(
-		'gutenberg_pop_up-block-editor-bootstrap-css', // Handle.
-		plugins_url( 'bootstrap-modal.css', dirname( __FILE__ ) ), // Block editor CSS.
-		array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
-		// filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' ) // Version: filemtime — Gets file modification time.
-	);
 } // End function gutenberg_pop_up_cgb_editor_assets().
 
 // Hook: Editor assets.
