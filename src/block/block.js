@@ -46,6 +46,17 @@ class EditorComponent extends Component {
 		const { attributes, setAttributes, className, focus} = this.props;
 
 		const styles = {
+			colorPreview: {
+				borderRadius: attributes.borderRadius,
+				border: "1px solid rgba(0, 0, 0, 0.2)",
+				width: "100%",
+				height: "60px",
+				position: "relative",
+				textAlign: 'center',
+				backgroundColor: attributes.textBackgroundColor,
+				boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
+				marginBottom: "3px",
+			},
 			previewBox: {
 				titleBackgroundColor: {
 					backgroundColor: attributes.titleBackgroundColor,
@@ -55,11 +66,13 @@ class EditorComponent extends Component {
 				},
 				titleColor: {
 					color: attributes.titleColor,
-					width: "50%",
+					width: "20%",
 					padding: "2px",
 				},
 				textColor: {
+					width: "20%",
 					color: attributes.textColor,
+					padding: "2px",
 				},
 			},
 			modal: {
@@ -110,7 +123,7 @@ class EditorComponent extends Component {
 					onChange={ (value) => setAttributes( { animation: value } ) }
 				/>
 				<SelectControl
-					label={ __("Color: ") }
+					label={ __("Change Color For: ") }
 					value={ this.state.colorSelector }
 					options={[
 						{ value: 'titleColor', label: __("Title") },
@@ -140,26 +153,16 @@ class EditorComponent extends Component {
 					}
 				/>
 				<RangeControl
-				label={ __("Border: ") }
+				label={ __("Border Radius: ") }
 				value={ (attributes.borderRadius / 3) }
 				min={ 0 }
 				max={ 5 }
 				onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
 				/>
-				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={{
-						borderRadius: attributes.borderRadius,
-						border: "1px solid rgba(0, 0, 0, 0.2)",
-						width: "75px",
-						height: "60px",
-						position: "relative",
-						left: "33%",
-						textAlign: 'center',
-						backgroundColor: attributes.textBackgroundColor,
-						boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
-						marginBottom: "3px",
-					}}>
+				{ __( "Preview:" ) }
+				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={ styles.colorPreview }>
 					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
-						<h3 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h3>
+						<h2 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h2>
 					</div>
 					<p className="textColor" style={ styles.previewBox.textColor } onClick={ (e) => this.handleChildClick(e) }>Content</p>
 				</div>
@@ -197,19 +200,6 @@ class EditorComponent extends Component {
 								{attributes.buttonText}
 							</button></p>
 
-							<div className="modal fade" data-easein={attributes.animation} id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-								<div className={ "modal-dialog"+attributes.size } role="document">
-									<div className="modal-content" style={ styles.modal.modalContent }>
-										<div className="modal-header" style={ styles.modal.modalHeader }>
-											<h4 className="modal-title" id="myModalLabel" style={ styles.modal.modalTitle }>{attributes.title}</h4>
-											<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-										</div>
-										<div className="modal-body">
-											<InnerBlocks/>
-										</div>
-									</div>
-								</div>
-							</div>
 						</div>
 				}
 
@@ -217,6 +207,20 @@ class EditorComponent extends Component {
 		];
 	}
 }
+
+// <div className="modal fade" data-easein={attributes.animation} id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+// 	<div className={ "modal-dialog"+attributes.size } role="document">
+// 		<div className="modal-content" style={ styles.modal.modalContent }>
+// 			<div className="modal-header" style={ styles.modal.modalHeader }>
+// 				<h4 className="modal-title" id="myModalLabel" style={ styles.modal.modalTitle }>{attributes.title}</h4>
+// 				<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+// 			</div>
+// 			<div className="modal-body">
+// 				<InnerBlocks/>
+// 			</div>
+// 		</div>
+// 	</div>
+// </div>
 
 /**
  * Register: aa Gutenberg Block.
