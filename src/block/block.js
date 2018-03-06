@@ -48,11 +48,9 @@ class EditorComponent extends Component {
 		const styles = {
 			colorPreview: {
 				borderRadius: attributes.borderRadius,
-				border: "1px solid rgba(0, 0, 0, 0.2)",
+				// border: "1px solid rgba(0, 0, 0, 0.2)",
 				width: "100%",
 				height: "60px",
-				position: "relative",
-				textAlign: 'center',
 				backgroundColor: attributes.textBackgroundColor,
 				boxShadow: "0 2px 5px rgba(0, 0, 0, 0.5)",
 				marginBottom: "3px",
@@ -67,12 +65,12 @@ class EditorComponent extends Component {
 				titleColor: {
 					color: attributes.titleColor,
 					width: "20%",
-					padding: "2px",
+					padding: "5px",
 				},
 				textColor: {
 					width: "20%",
 					color: attributes.textColor,
-					padding: "2px",
+					padding: "5px",
 				},
 			},
 			modal: {
