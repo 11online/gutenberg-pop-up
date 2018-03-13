@@ -197,26 +197,28 @@ class EditorComponent extends Component {
 							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
 								{attributes.buttonText}
 							</button></p>
-
 						</div>
 				}
-				<div className="modal fade" data-easein={attributes.animation} id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-					<div className={ "modal-dialog"+attributes.size } role="document">
-						<div className="modal-content" style={ styles.modal.modalContent }>
-							<div className="modal-header" style={ styles.modal.modalHeader }>
-								<h4 className="modal-title" id="myModalLabel" style={ styles.modal.modalTitle }>{attributes.title}</h4>
-								<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							</div>
-							<div className="modal-body">
-								<InnerBlocks/>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>)
+			</div>
+		)
 		];
 	}
 }
+
+// PREVIEW MODAL:
+// <div className="modal fade" data-easein={attributes.animation} id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+// 	<div className={ "modal-dialog"+attributes.size } role="document">
+// 		<div className="modal-content" style={ styles.modal.modalContent }>
+// 			<div className="modal-header" style={ styles.modal.modalHeader }>
+// 				<h4 className="modal-title" id="myModalLabel" style={ styles.modal.modalTitle }>{attributes.title}</h4>
+// 				<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+// 			</div>
+// 			<div className="modal-body">
+// 				<InnerBlocks/>
+// 			</div>
+// 		</div>
+// 	</div>
+// </div>
 
 /**
  * Register: aa Gutenberg Block.
