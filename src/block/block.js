@@ -239,7 +239,7 @@ registerBlockType( 'block-party/block-gutenberg-pop-up', {
 	attributes: {
 		title: {
 			type: 'string',
-			default: 'Title'
+			default: ''
 		},
 		buttonText: {
 			type: 'string',
