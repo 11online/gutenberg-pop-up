@@ -126,7 +126,6 @@ class EditorComponent extends Component {
 					options={[
 						{ value: 'titleColor', label: __("Title") },
 						{ value: 'titleBackgroundColor', label: __("Title Background") },
-						{ value: 'textColor', label: __("Content") },
 						{ value: 'textBackgroundColor', label: __("Content Background") },
 					]}
 					onChange={ (value) => this.setState( { colorSelector: value } ) }
@@ -143,9 +142,6 @@ class EditorComponent extends Component {
 						  case 'titleColor':
 								setAttributes( { titleColor: value} );
 								break;
-						  case 'textColor':
-						    setAttributes( { textColor: value} );
-						    break;
 							}
 						}
 					}
@@ -162,10 +158,14 @@ class EditorComponent extends Component {
 					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
 						<h2 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h2>
 					</div>
-					<p className="textColor" style={ styles.previewBox.textColor } onClick={ (e) => this.handleChildClick(e) }>Content</p>
 				</div>
 			</InspectorControls>
 		) : null;
+
+		//This previously allowed users to click on "content" in the previewBox to
+		//	change color, but it has been removed because users can already change
+		//  text color through the Block Controls when creating paragraph with InnerBlocks
+		// <p className="textColor" style={ styles.previewBox.textColor } onClick={ (e) => this.handleChildClick(e) }>Content</p>
 
 		return [
 			controls,
