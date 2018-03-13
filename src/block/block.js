@@ -158,7 +158,7 @@ class EditorComponent extends Component {
 				onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
 				/>
 				{ __( "Preview:" ) }
-				<dinpm run v className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={ styles.colorPreview }>
+				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={ styles.colorPreview }>
 					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
 						<h2 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h2>
 					</div>
@@ -239,7 +239,7 @@ registerBlockType( 'block-party/block-gutenberg-pop-up', {
 	attributes: {
 		title: {
 			type: 'string',
-			default: ''
+			default: '',
 		},
 		buttonText: {
 			type: 'string',
