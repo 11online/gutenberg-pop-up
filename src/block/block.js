@@ -151,14 +151,14 @@ class EditorComponent extends Component {
 					}
 				/>
 				<RangeControl
-				label={ __("Border Radius: ") }
+				label={ __("Rounded Corners: ") }
 				value={ (attributes.borderRadius / 3) }
 				min={ 0 }
 				max={ 5 }
 				onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
 				/>
 				{ __( "Preview:" ) }
-				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={ styles.colorPreview }>
+				<dinpm run v className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={ styles.colorPreview }>
 					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
 						<h2 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h2>
 					</div>
