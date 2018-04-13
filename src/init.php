@@ -65,6 +65,16 @@ add_action( 'enqueue_block_assets', 'gutenberg_pop_up_block_assets' );
 function gutenberg_pop_up_editor_assets() {
 	// Scripts.
 	wp_enqueue_script(
+		'block-party-pop-up-velocity',
+		"//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js",
+		array( 'jquery' )
+	);
+	wp_enqueue_script(
+		'block-party-pop-up-velocity-ui',
+		"//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.min.js",
+		array( 'jquery', 'block-party-pop-up-velocity' )
+	);
+	wp_enqueue_script(
 		'gutenberg_pop_up-block-js', // Handle.
 		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
 		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.

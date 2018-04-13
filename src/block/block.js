@@ -19,6 +19,8 @@ const IconButton = wp.components.IconButton;
 const { Component } = wp.element;
 const InspectorControls = wp.blocks.InspectorControls;
 const ColorPalette = wp.blocks.ColorPalette;
+const BlockAlignmentToolbar = wp.blocks.BlockAlignmentToolbar;
+const AlignmentToolbar = wp.blocks.AlignmentToolbar;
 
 
 class EditorComponent extends Component {
@@ -63,8 +65,8 @@ class EditorComponent extends Component {
 					borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0`,
 				},
 				titleColor: {
+					display: 'inline',
 					color: attributes.titleColor,
-					width: "20%",
 					padding: "5px",
 				},
 				textColor: {
@@ -87,10 +89,32 @@ class EditorComponent extends Component {
 					color: attributes.titleColor,
 				},
 			},
+			button: {
+				backgroundColor: attributes.buttonColor,
+				color: attributes.buttonTextColor,
+			},
 		}
 
-		const controls = focus ?
-		 (
+		const previewAnimation = (animation) => {
+				let className = '.animation-select-control'
+				if (animation == 'shake') {
+					jQuery(className).velocity('callout.' + animation);
+				} else if (animation == 'pulse') {
+					jQuery(className).velocity('callout.' + animation);
+				} else if (animation == 'tada') {
+					jQuery(className).velocity('callout.' + animation);
+				} else if (animation == 'flash') {
+					jQuery(className).velocity('callout.' + animation);
+				} else if (animation == 'bounce') {
+					jQuery(className).velocity('callout.' + animation);
+				} else if (animation == 'swing') {
+					jQuery(className).velocity('callout.' + animation);
+				} else {
+					jQuery(className).velocity('transition.' + animation);
+				}
+		}
+
+		const controls = focus && [
 			 <InspectorControls>
 				<SelectControl
 					label={ __("Size: ") }
@@ -103,6 +127,8 @@ class EditorComponent extends Component {
 					onChange={ (value) => setAttributes( { size: value } ) }
 				/>
 				<SelectControl
+					className="animation-select-control"
+					style={{ width: '100%'}}
 					label={ __("Animation: ") }
 					value={ attributes.animation }
 					options={[
@@ -118,7 +144,10 @@ class EditorComponent extends Component {
 						{ value: 'swing', label: __("Swing") },
 						{ value: 'tada', label: __("Tada") }
 					]}
-					onChange={ (value) => setAttributes( { animation: value } ) }
+					onChange={ (value) => {
+						setAttributes( { animation: value } )
+						previewAnimation( value )
+					} }
 				/>
 				<SelectControl
 					label={ __("Change Color For: ") }
@@ -127,6 +156,8 @@ class EditorComponent extends Component {
 						{ value: 'titleColor', label: __("Title") },
 						{ value: 'titleBackgroundColor', label: __("Title Background") },
 						{ value: 'textBackgroundColor', label: __("Content Background") },
+						{ value: 'buttonColor', label: __("Button") },
+						{ value: 'buttonTextColor', label: __("Button Text") },
 					]}
 					onChange={ (value) => this.setState( { colorSelector: value } ) }
 				/>
@@ -134,13 +165,19 @@ class EditorComponent extends Component {
 					onChange={ ( value ) => {
 						switch (this.state.colorSelector) {
 						  case 'textBackgroundColor':
-						    setAttributes( { textBackgroundColor: value} );
+						    setAttributes( { textBackgroundColor: value } );
 						    break;
 							case 'titleBackgroundColor':
-							  setAttributes( { titleBackgroundColor: value} );
+							  setAttributes( { titleBackgroundColor: value } );
 							  break;
 						  case 'titleColor':
-								setAttributes( { titleColor: value} );
+								setAttributes( { titleColor: value } );
+								break;
+							case 'buttonColor':
+								setAttributes( { buttonColor: value } );
+								break;
+							case 'buttonTextColor':
+								setAttributes( { buttonTextColor: value } );
 								break;
 							}
 						}
@@ -153,19 +190,15 @@ class EditorComponent extends Component {
 				max={ 5 }
 				onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
 				/>
-				{ __( "Preview:" ) }
+				{ __( "Mini Preview:" ) }
 				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={ styles.colorPreview }>
 					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
-						<h2 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>Title</h2>
+						<h2 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>{attributes.title}</h2>
+						<h2 className="textBackgroundColor" style={{textAlign:'center'}} onClick={ (e) => this.handleChildClick(e) }>...</h2>
 					</div>
 				</div>
 			</InspectorControls>
-		) : null;
-
-		//This previously allowed users to click on "content" in the previewBox to
-		//	change color, but it has been removed because users can already change
-		//  text color through the Block Controls when creating paragraph with InnerBlocks
-		// <p className="textColor" style={ styles.previewBox.textColor } onClick={ (e) => this.handleChildClick(e) }>Content</p>
+		]
 
 		return [
 			controls,
@@ -173,7 +206,7 @@ class EditorComponent extends Component {
 				<div>
 				{ this.state.isEditing
 					?
-						<div>
+						<div className="pop-up-editor-container">
 							<TextControl
 								label="Button Text:"
 								onChange={ ( value ) => setAttributes( { buttonText: value } ) }
@@ -189,14 +222,23 @@ class EditorComponent extends Component {
 							<label class="blocks-base-control__label">Pop Up Content:</label>
 							<InnerBlocks/>
 							<div style={{textAlign: 'right'}}>
+								<span>Close and apply:</span>
 								<IconButton style={{display: 'inline-block'}} icon="editor-break" label={ __( 'Apply' ) } type="submit" onClick={(event) => { event.preventDefault(); this.setState({ isEditing: false });}}/>
 							</div>
 						</div>
 					:
-						<div className={ className } onClick={() => this.setState({ isEditing: true })}>
-							<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
-								{attributes.buttonText}
-							</button></p>
+						<div>
+							<BlockAlignmentToolbar
+								value={attributes.align}
+								onChange={ (value) => {
+									setAttributes( { align: value === 'right' ? 'flex-end' : value } )
+								} }
+							/>
+							<div style={{display: 'flex', justifyContent: attributes.align}} className={ className } onClick={() => this.setState({ isEditing: true })}>
+								<p><button style={styles.button} type="button" className="btn btn-primary btn-lg" data-toggle="modal">
+									{attributes.buttonText}
+								</button></p>
+							</div>
 						</div>
 				}
 			</div>
@@ -204,21 +246,6 @@ class EditorComponent extends Component {
 		];
 	}
 }
-
-// PREVIEW MODAL:
-// <div className="modal fade" data-easein={attributes.animation} id={attributes.randomKey} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-// 	<div className={ "modal-dialog"+attributes.size } role="document">
-// 		<div className="modal-content" style={ styles.modal.modalContent }>
-// 			<div className="modal-header" style={ styles.modal.modalHeader }>
-// 				<h4 className="modal-title" id="myModalLabel" style={ styles.modal.modalTitle }>{attributes.title}</h4>
-// 				<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-// 			</div>
-// 			<div className="modal-body">
-// 				<InnerBlocks/>
-// 			</div>
-// 		</div>
-// 	</div>
-// </div>
 
 /**
  * Register: aa Gutenberg Block.
@@ -245,7 +272,11 @@ registerBlockType( 'block-party/block-gutenberg-pop-up', {
 		},
 		buttonText: {
 			type: 'string',
-			default: 'Button Text'
+			default: 'Click Me'
+		},
+		align:{
+			type: 'string',
+			default: 'left'
 		},
 		randomKey: {
 			type: 'string',
@@ -268,6 +299,14 @@ registerBlockType( 'block-party/block-gutenberg-pop-up', {
 			default: ''
 		},
 		titleColor: {
+			type: 'string',
+			default: ''
+		},
+		buttonColor: {
+			type: 'string',
+			default: ''
+		},
+		buttonTextColor: {
 			type: 'string',
 			default: ''
 		},
@@ -321,11 +360,15 @@ registerBlockType( 'block-party/block-gutenberg-pop-up', {
 					color: attributes.titleColor,
 				},
 			},
+			button: {
+				backgroundColor: attributes.buttonColor,
+				color: attributes.buttonTextColor,
+			},
 		}
 
 		return (
-			<div className={ className }>
-				<p><button type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
+			<div className={ className } style={{display: 'flex', justifyContent: attributes.align}}>
+				<p><button style={styles.button} type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
 					{attributes.buttonText}
 				</button></p>
 
