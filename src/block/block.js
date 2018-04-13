@@ -39,13 +39,25 @@ class EditorComponent extends Component {
 		this.props.setAttributes({randomKey: randomKey});
 	}
 
-	handleChildClick(e) {
-		e.stopPropagation();
-		this.setState( { colorSelector: e.target.className } );
-}
+	// handleChildClick(e) {
+	// 	e.stopPropagation();
+	// 	previewAnimation(attributes.animation, '.colorPreview')
+	// 	this.setState( { colorSelector: e.target.className } )
+	// }
 
 	render() {
 		const { attributes, setAttributes, className, focus} = this.props;
+
+		const handleChildClick = (e) => {
+			e.stopPropagation();
+			previewAnimation(attributes.animation, '.colorPreview')
+			this.setState( { colorSelector: e.target.className } )
+		}
+
+		const handleParentClick = (e) => {
+			previewAnimation(attributes.animation, '.colorPreview')
+			this.setState( { colorSelector: 'textBackgroundColor' } )
+		}
 
 		const styles = {
 			colorPreview: {
@@ -95,22 +107,21 @@ class EditorComponent extends Component {
 			},
 		}
 
-		const previewAnimation = (animation) => {
-				let className = '.animation-select-control'
+		const previewAnimation = (animation, element) => {
 				if (animation == 'shake') {
-					jQuery(className).velocity('callout.' + animation);
+					jQuery(element).velocity('callout.' + animation);
 				} else if (animation == 'pulse') {
-					jQuery(className).velocity('callout.' + animation);
+					jQuery(element).velocity('callout.' + animation);
 				} else if (animation == 'tada') {
-					jQuery(className).velocity('callout.' + animation);
+					jQuery(element).velocity('callout.' + animation);
 				} else if (animation == 'flash') {
-					jQuery(className).velocity('callout.' + animation);
+					jQuery(element).velocity('callout.' + animation);
 				} else if (animation == 'bounce') {
-					jQuery(className).velocity('callout.' + animation);
+					jQuery(element).velocity('callout.' + animation);
 				} else if (animation == 'swing') {
-					jQuery(className).velocity('callout.' + animation);
+					jQuery(element).velocity('callout.' + animation);
 				} else {
-					jQuery(className).velocity('transition.' + animation);
+					jQuery(element).velocity('transition.' + animation);
 				}
 		}
 
@@ -146,7 +157,7 @@ class EditorComponent extends Component {
 					]}
 					onChange={ (value) => {
 						setAttributes( { animation: value } )
-						previewAnimation( value )
+						previewAnimation(value, '.animation-select-control')
 					} }
 				/>
 				<SelectControl
@@ -191,10 +202,10 @@ class EditorComponent extends Component {
 				onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
 				/>
 				{ __( "Mini Preview:" ) }
-				<div className="colorPreview" onClick={ () => this.setState( { colorSelector: 'textBackgroundColor' } ) } style={ styles.colorPreview }>
-					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => this.handleChildClick(e) }>
-						<h2 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => this.handleChildClick(e) }>{attributes.title}</h2>
-						<h2 className="textBackgroundColor" style={{textAlign:'center'}} onClick={ (e) => this.handleChildClick(e) }>...</h2>
+				<div className="colorPreview" onClick={ (e) => handleParentClick(e) } style={ styles.colorPreview }>
+					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => handleChildClick(e) }>
+						<h2 className="titleColor" style={ styles.previewBox.titleColor } onClick={ (e) => handleChildClick(e) }>{attributes.title}</h2>
+						<h2 className="textBackgroundColor" style={{textAlign:'center'}} onClick={ (e) => handleChildClick(e) }>...</h2>
 					</div>
 				</div>
 			</InspectorControls>
@@ -228,12 +239,14 @@ class EditorComponent extends Component {
 						</div>
 					:
 						<div>
-							<BlockAlignmentToolbar
-								value={attributes.align}
-								onChange={ (value) => {
-									setAttributes( { align: value === 'right' ? 'flex-end' : value } )
-								} }
-							/>
+							{ focus &&
+								<BlockAlignmentToolbar
+									value={attributes.align}
+									onChange={ (value) => {
+										setAttributes( { align: value === 'right' ? 'flex-end' : value } )
+									} }
+								/>
+							}
 							<div style={{display: 'flex', justifyContent: attributes.align}} className={ className } onClick={() => this.setState({ isEditing: true })}>
 								<p><button style={styles.button} type="button" className="btn btn-primary btn-lg" data-toggle="modal">
 									{attributes.buttonText}
@@ -265,6 +278,7 @@ registerBlockType( 'block-party/block-gutenberg-pop-up', {
 	title: __( 'Pop Up' ), // Block title.
 	icon: 'external', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	description: __( 'Create a custom pop-up modal!' ),
 	attributes: {
 		title: {
 			type: 'string',
