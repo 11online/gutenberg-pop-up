@@ -125,7 +125,7 @@ class EditorComponent extends Component {
 				}
 		}
 
-		const controls = focus && [
+		const controls = [
 			 <InspectorControls>
 				<SelectControl
 					label={ __("Size: ") }
@@ -239,14 +239,14 @@ class EditorComponent extends Component {
 						</div>
 					:
 						<div>
-							{ focus &&
-								<BlockAlignmentToolbar
-									value={attributes.align}
-									onChange={ (value) => {
-										setAttributes( { align: value === 'right' ? 'flex-end' : value } )
-									} }
-								/>
-							}
+
+							<BlockAlignmentToolbar
+								value={attributes.align}
+								onChange={ (value) => {
+									setAttributes( { align: value === 'right' ? 'flex-end' : value } )
+								} }
+							/>
+
 							<div style={{display: 'flex', justifyContent: attributes.align}} className={ className } onClick={() => this.setState({ isEditing: true })}>
 								<p><button style={styles.button} type="button" className="btn btn-primary btn-lg" data-toggle="modal">
 									{attributes.buttonText}
