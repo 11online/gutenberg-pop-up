@@ -273,9 +273,9 @@ class EditorComponent extends Component {
  * @return {?WPBlock}          The block, if it has been successfully
  *                             registered; otherwise `undefined`.
  */
-registerBlockType( 'block-party/block-gutenberg-pop-up', {
+registerBlockType( 'blockparty/block-gutenberg-pop-up', {
 	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'Pop Up' ), // Block title.
+	title: __( 'BP Pop Up' ), // Block title.
 	icon: 'external', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
 	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
 	description: __( 'Create a custom pop-up modal!' ),
@@ -334,7 +334,8 @@ registerBlockType( 'block-party/block-gutenberg-pop-up', {
 		}
 	},
 	keywords: [
-		__( 'Pop Up' )
+		__( 'Pop Up' ),
+		__( 'Block Party' ),
 	],
 
 	/**
