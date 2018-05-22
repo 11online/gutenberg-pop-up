@@ -10,17 +10,10 @@ import './style.scss';
 import './editor.scss';
 
 const { __ } = wp.i18n; // Import __() from wp.i18n
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-const InnerBlocks = wp.blocks.InnerBlocks;
-const TextControl = wp.components.TextControl;
-const SelectControl = wp.components.SelectControl;
-const RangeControl = wp.components.RangeControl;
-const IconButton = wp.components.IconButton;
 const { Component } = wp.element;
-const InspectorControls = wp.blocks.InspectorControls;
-const ColorPalette = wp.blocks.ColorPalette;
-const BlockAlignmentToolbar = wp.blocks.BlockAlignmentToolbar;
-const AlignmentToolbar = wp.blocks.AlignmentToolbar;
+const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
+const { InnerBlocks, InspectorControls, ColorPalette, BlockAlignmentToolbar, AlignmentToolbar } = wp.editor;
+const { TextControl, SelectControl, RangeControl, IconButton } = wp.components;
 
 
 class EditorComponent extends Component {
