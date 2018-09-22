@@ -1,12 +1,4 @@
 <?php
-/**
- * Blocks Initializer
- *
- * Enqueue CSS/JS of all the blocks.
- *
- * @since 	1.0.0
- * @package CGB
- */
 
 // Exit if accessed directly.
 if ( ! defined( 'ABSPATH' ) ) {
@@ -22,10 +14,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 function gutenberg_pop_up_block_assets() {
 	wp_enqueue_script(
-		'gutenberg_pop_up-block-bootstrap-js', // Handle.
-		plugins_url( '/bootstrap-modal.min.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
-		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
-		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
+		'gutenberg_pop_up-block-bootstrap-js',
+		plugins_url( '/bootstrap-modal.min.js', dirname( __FILE__ ) ), 
+		array( 'wp-blocks', 'wp-i18n', 'wp-element' )
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity',
@@ -43,14 +34,12 @@ function gutenberg_pop_up_block_assets() {
 		array( 'jquery', 'block-party-pop-up-velocity', 'block-party-pop-up-velocity-ui' )
 	);
 	wp_enqueue_style(
-		'gutenberg_pop_up-block-editor-bootstrap-css', // Handle.
-		plugins_url( 'bootstrap-modal.css', dirname( __FILE__ ) ), // Block editor CSS.
-		array( 'wp-edit-blocks' ) // Dependency to include the CSS after it.
-		// filemtime( plugin_dir_path( __FILE__ ) . 'editor.css' ) // Version: filemtime — Gets file modification time.
+		'gutenberg_pop_up-block-editor-bootstrap-css',
+		plugins_url( 'bootstrap-modal.css', dirname( __FILE__ ) ),
+		array( 'wp-edit-blocks' ) 
 	);
-} // End function gutenberg_pop_up_cgb_block_assets().
+} 
 
-// Hook: Frontend assets.
 add_action( 'enqueue_block_assets', 'gutenberg_pop_up_block_assets' );
 
 /**
@@ -75,12 +64,11 @@ function gutenberg_pop_up_editor_assets() {
 		array( 'jquery', 'block-party-pop-up-velocity' )
 	);
 	wp_enqueue_script(
-		'gutenberg_pop_up-block-js', // Handle.
-		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ), // Block.build.js: We register the block here. Built with Webpack.
-		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) // Dependencies, defined above.
-		// filemtime( plugin_dir_path( __FILE__ ) . 'block.js' ) // Version: filemtime — Gets file modification time.
+		'gutenberg_pop_up-block-js',
+		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
+		array( 'wp-blocks', 'wp-i18n', 'wp-element' ) 
 	);
-} // End function gutenberg_pop_up_cgb_editor_assets().
+} 
 
 // Hook: Editor assets.
 add_action( 'enqueue_block_editor_assets', 'gutenberg_pop_up_editor_assets' );

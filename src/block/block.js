@@ -1,19 +1,8 @@
-/**
- * BLOCK: gutenberg-pop-up
- *
- * Registering a basic block with Gutenberg.
- * Simple block, renders and saves the same content without any interactivity.
- */
-
-//  Import CSS.
-import './style.scss';
-import './editor.scss';
-
-const { __ } = wp.i18n; // Import __() from wp.i18n
+const { __ } = wp.i18n; 
 const { Component } = wp.element;
-const { registerBlockType } = wp.blocks; // Import registerBlockType() from wp.blocks
-const { InnerBlocks, InspectorControls, ColorPalette, BlockAlignmentToolbar, AlignmentToolbar } = wp.editor;
-const { TextControl, SelectControl, RangeControl, IconButton } = wp.components;
+const { registerBlockType } = wp.blocks; 
+const { InnerBlocks, InspectorControls, ColorPalette, BlockAlignmentToolbar, AlignmentToolbar, RichText } = wp.editor;
+const { TextControl, SelectControl, RangeControl, IconButton, PanelBody } = wp.components;
 
 
 class EditorComponent extends Component {
@@ -22,8 +11,7 @@ class EditorComponent extends Component {
 	constructor() {
 		super( ...arguments );
 		this.state = {
-			isEditing: false,
-			colorSelector: 'titleColor',
+			isEditing: false
 		}
 	}
 
@@ -31,12 +19,6 @@ class EditorComponent extends Component {
 		const randomKey = "myModal" + Math.floor(Math.random() * 1000);
 		this.props.setAttributes({randomKey: randomKey});
 	}
-
-	// handleChildClick(e) {
-	// 	e.stopPropagation();
-	// 	previewAnimation(attributes.animation, '.colorPreview')
-	// 	this.setState( { colorSelector: e.target.className } )
-	// }
 
 	render() {
 		const { attributes, setAttributes, className, focus, isSelected} = this.props;
@@ -50,6 +32,20 @@ class EditorComponent extends Component {
 		const handleParentClick = (e) => {
 			previewAnimation(attributes.animation, '.colorPreview')
 			this.setState( { colorSelector: 'textBackgroundColor' } )
+		}
+
+		const colorControl = (attributeName, title) => {
+			return [
+				<p>{__(title)}</p>,
+				<ColorPalette
+					onChange={ ( value ) => {
+						const update = {};
+						update[attributeName] = value;
+						setAttributes( update )
+						}
+					}
+				/>
+			];
 		}
 
 		const styles = {
@@ -153,47 +149,30 @@ class EditorComponent extends Component {
 						previewAnimation(value, '.animation-select-control')
 					} }
 				/>
-				<SelectControl
-					label={ __("Change Color For: ") }
-					value={ this.state.colorSelector }
-					options={[
-						{ value: 'titleColor', label: __("Title") },
-						{ value: 'titleBackgroundColor', label: __("Title Background") },
-						{ value: 'textBackgroundColor', label: __("Content Background") },
-						{ value: 'buttonColor', label: __("Button") },
-						{ value: 'buttonTextColor', label: __("Button Text") },
-					]}
-					onChange={ (value) => this.setState( { colorSelector: value } ) }
-				/>
-				<ColorPalette
-					onChange={ ( value ) => {
-						switch (this.state.colorSelector) {
-						  case 'textBackgroundColor':
-						    setAttributes( { textBackgroundColor: value } );
-						    break;
-							case 'titleBackgroundColor':
-							  setAttributes( { titleBackgroundColor: value } );
-							  break;
-						  case 'titleColor':
-								setAttributes( { titleColor: value } );
-								break;
-							case 'buttonColor':
-								setAttributes( { buttonColor: value } );
-								break;
-							case 'buttonTextColor':
-								setAttributes( { buttonTextColor: value } );
-								break;
-							}
-						}
-					}
-				/>
+				<PanelBody title={ __( 'Title Settings' ) } initialOpen={false}>
+					<TextControl
+						label="Pop Up Title:"
+						onChange={ ( value ) => setAttributes( { title: value } ) }
+						value={ attributes.title }
+						placeholder="Pop Up Title"
+					/>
+					{colorControl('titleColor', 'Title Color')}
+					{colorControl('titleBackgroundColor', 'Title Background Color')}
+				</PanelBody>
+				<PanelBody title={ __( 'Content Settings' ) } initialOpen={false}>
+					{colorControl('textBackgroundColor', 'Text Background Color')}
+				</PanelBody>
+				<PanelBody title={ __( 'Button Settings' ) } initialOpen={false}>
+					{colorControl('buttonTextColor', 'Button Text Color')}
+					{colorControl('buttonColor', 'Button Background Color')}
+				</PanelBody>
 				<RangeControl
-				label={ __("Rounded Corners: ") }
-				value={ (attributes.borderRadius / 3) }
-				min={ 0 }
-				max={ 5 }
-				onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
-				/>
+					label={ __("Rounded Corners: ") }
+					value={ (attributes.borderRadius / 3) }
+					min={ 0 }
+					max={ 5 }
+					onChange={ (value) => setAttributes( { borderRadius: (value * 3) } ) }
+				/>	
 				{ __( "Mini Preview:" ) }
 				<div className="colorPreview" onClick={ (e) => handleParentClick(e) } style={ styles.colorPreview }>
 					<div className="titleBackgroundColor" style={ styles.previewBox.titleBackgroundColor } onClick={ (e) => handleChildClick(e) }>
@@ -206,45 +185,47 @@ class EditorComponent extends Component {
 
 		return [
 			controls,
+			isSelected || this.state.isEditing
+				?
+					<BlockAlignmentToolbar
+						value={attributes.align}
+						onChange={ (value) => {
+							setAttributes( { align: value === 'right' ? 'flex-end' : value } )
+						} }
+					/>
+				: 
+					null,
 			(
 				<div>
 				{ this.state.isEditing
 					?
 						<div className="pop-up-editor-container">
-							<TextControl
-								label="Button Text:"
-								onChange={ ( value ) => setAttributes( { buttonText: value } ) }
-								value={ attributes.buttonText }
-								placeholder="Button Text"
-							/>
-							<TextControl
-								label="Pop Up Title:"
-								onChange={ ( value ) => setAttributes( { title: value } ) }
-								value={ attributes.title }
-								placeholder="Pop Up Title"
-							/>
+							<div style={{display: 'flex', justifyContent: attributes.align}} className={ className } onClick={() => this.setState({ isEditing: true })}>
+								<p><span style={styles.button} type="button" className="button">
+									<RichText
+										value={attributes.buttonText}
+										onChange={ ( value ) => setAttributes( { buttonText: value } ) }
+									/>
+								</span></p>
+							</div>
 							<label class="blocks-base-control__label">Pop Up Content:</label>
 							<InnerBlocks/>
 							<div style={{textAlign: 'right'}}>
-								<span>Close and apply:</span>
-								<IconButton style={{display: 'inline-block'}} icon="editor-break" label={ __( 'Apply' ) } type="submit" onClick={(event) => { event.preventDefault(); this.setState({ isEditing: false });}}/>
+								<IconButton style={{display: 'inline-block'}} icon="no" label={ __( 'Close' ) } type="submit" onClick={(event) => { event.preventDefault(); this.setState({ isEditing: false });}}/>
 							</div>
 						</div>
 					:
 						<div>
-							{ isSelected &&
-								<BlockAlignmentToolbar
-									value={attributes.align}
-									onChange={ (value) => {
-										setAttributes( { align: value === 'right' ? 'flex-end' : value } )
-									} }
-								/>
-							}
 							<div style={{display: 'flex', justifyContent: attributes.align}} className={ className } onClick={() => this.setState({ isEditing: true })}>
-								<p><button style={styles.button} type="button" className="btn btn-primary btn-lg" data-toggle="modal">
-									{attributes.buttonText}
+								<p><button style={styles.button} type="button" className="button" data-toggle="modal">
+									<RichText.Content tagName="span" value={ attributes.buttonText } />
 								</button></p>
 							</div>
+							{ isSelected &&
+								<div style={{textAlign: 'right'}}>
+									<IconButton style={{display: 'inline-block'}} icon="edit" label={ __( 'Edit Popup Content' ) } type="submit" onClick={(event) => { event.preventDefault(); this.setState({ isEditing: true });}}/>
+								</div>
+							}
 						</div>
 				}
 			</div>
@@ -253,24 +234,10 @@ class EditorComponent extends Component {
 	}
 }
 
-/**
- * Register: aa Gutenberg Block.
- *
- * Registers a new block provided a unique name and an object defining its
- * behavior. Once registered, the block is made editor as an option to any
- * editor interface where blocks are implemented.
- *
- * @link https://wordpress.org/gutenberg/handbook/block-api/
- * @param  {string}   name     Block name.
- * @param  {Object}   settings Block settings.
- * @return {?WPBlock}          The block, if it has been successfully
- *                             registered; otherwise `undefined`.
- */
 registerBlockType( 'blockparty/block-gutenberg-pop-up', {
-	// Block name. Block names must be string that contains a namespace prefix. Example: my-plugin/my-custom-block.
-	title: __( 'BP Pop Up' ), // Block title.
-	icon: 'external', // Block icon from Dashicons → https://developer.wordpress.org/resource/dashicons/.
-	category: 'common', // Block category — Group blocks together based on common traits E.g. common, formatting, layout widgets, embed.
+	title: __( 'Block Party Pop Up' ),
+	icon: 'external', 
+	category: 'common', 
 	description: __( 'Create a custom pop-up modal!' ),
 	attributes: {
 		title: {
@@ -278,8 +245,8 @@ registerBlockType( 'blockparty/block-gutenberg-pop-up', {
 			default: '',
 		},
 		buttonText: {
-			type: 'string',
-			default: 'Click Me'
+			type: 'object',
+			default: <span>Click Me</span>
 		},
 		align:{
 			type: 'string',
@@ -331,25 +298,7 @@ registerBlockType( 'blockparty/block-gutenberg-pop-up', {
 		__( 'Block Party' ),
 	],
 
-	/**
-	 * The edit function describes the structure of your block in the context of the editor.
-	 * This represents what the editor will render when the block is used.
-	 *
-	 * The "edit" property must be a valid function.
-	 *
-	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-	 */
 	edit: EditorComponent,
-
-	/**
-	 * The save function defines the way in which the different attributes should be combined
-	 * into the final markup, which is then serialized by Gutenberg into post_content.
-	 *
-	 * The "save" property must be specified and must be a valid function.
-	 *
-	 * @link https://wordpress.org/gutenberg/handbook/block-api/block-edit-save/
-	 */
-
 
 	save: function({ attributes, className }) {
 
@@ -376,8 +325,8 @@ registerBlockType( 'blockparty/block-gutenberg-pop-up', {
 
 		return (
 			<div className={ className } style={{display: 'flex', justifyContent: attributes.align}}>
-				<p><button style={styles.button} type="button" className="btn btn-primary btn-lg" data-toggle="modal" data-target={"#"+attributes.randomKey}>
-					{attributes.buttonText}
+				<p><button style={styles.button} type="button" className="button" data-toggle="modal" data-target={"#"+attributes.randomKey}>
+					<RichText.Content tagName="span" value={ attributes.buttonText } />
 				</button></p>
 
 				<div className="modal" data-easein={attributes.animation} id={attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
