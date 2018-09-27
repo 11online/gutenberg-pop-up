@@ -211,7 +211,7 @@ class EditorComponent extends Component {
 							<label class="blocks-base-control__label">Pop Up Content:</label>
 							<InnerBlocks/>
 							<div style={{textAlign: 'right'}}>
-								<IconButton style={{display: 'inline-block'}} icon="no" label={ __( 'Close' ) } type="submit" onClick={(event) => { event.preventDefault(); this.setState({ isEditing: false });}}/>
+								<IconButton style={{display: 'inline-block'}} icon="yes" label={ __( 'Apply' ) } type="submit" onClick={(event) => { event.preventDefault(); this.setState({ isEditing: false });}}/>
 							</div>
 						</div>
 					:
