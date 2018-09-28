@@ -1,7 +1,7 @@
 const { __ } = wp.i18n; 
 const { Component } = wp.element;
 const { registerBlockType } = wp.blocks; 
-const { InnerBlocks, InspectorControls, ColorPalette, BlockAlignmentToolbar, AlignmentToolbar, RichText } = wp.editor;
+const { InnerBlocks, InspectorControls, ColorPalette, BlockAlignmentToolbar, AlignmentToolbar, PlainText } = wp.editor;
 const { TextControl, SelectControl, RangeControl, IconButton, PanelBody } = wp.components;
 
 
@@ -202,8 +202,9 @@ class EditorComponent extends Component {
 						<div className="pop-up-editor-container">
 							<div style={{display: 'flex', justifyContent: attributes.align}} className={ className } onClick={() => this.setState({ isEditing: true })}>
 								<p><span style={styles.button} type="button" className="button">
-									<RichText
+									<PlainText
 										value={attributes.buttonText}
+										style={{backgroundColor: 'transparent'}}
 										onChange={ ( value ) => setAttributes( { buttonText: value } ) }
 									/>
 								</span></p>
@@ -218,7 +219,7 @@ class EditorComponent extends Component {
 						<div>
 							<div style={{display: 'flex', justifyContent: attributes.align}} className={ className } onClick={() => this.setState({ isEditing: true })}>
 								<p><button style={styles.button} type="button" className="button" data-toggle="modal">
-									<RichText.Content tagName="span" value={ attributes.buttonText } />
+									{ attributes.buttonText }
 								</button></p>
 							</div>
 							{ isSelected &&
@@ -239,60 +240,6 @@ registerBlockType( 'blockparty/block-gutenberg-pop-up', {
 	icon: 'external', 
 	category: 'common', 
 	description: __( 'Create a custom pop-up modal!' ),
-	attributes: {
-		title: {
-			type: 'string',
-			default: '',
-		},
-		buttonText: {
-			type: 'object',
-			default: <span>Click Me</span>
-		},
-		align:{
-			type: 'string',
-			default: 'left'
-		},
-		randomKey: {
-			type: 'string',
-			default: 'myModal'
-		},
-		size: {
-			type: 'string',
-			default: ''
-		},
-		textBackgroundColor: {
-			type: 'string',
-			default: ''
-		},
-		titleBackgroundColor: {
-			type: 'string',
-			default: ''
-		},
-		textColor: {
-			type: 'string',
-			default: ''
-		},
-		titleColor: {
-			type: 'string',
-			default: ''
-		},
-		buttonColor: {
-			type: 'string',
-			default: ''
-		},
-		buttonTextColor: {
-			type: 'string',
-			default: ''
-		},
-		borderRadius: {
-			type: 'number',
-			default: 6
-		},
-		animation: {
-			type: 'string',
-			default: 'fadeIn'
-		}
-	},
 	keywords: [
 		__( 'Pop Up' ),
 		__( 'Block Party' ),
@@ -300,49 +247,7 @@ registerBlockType( 'blockparty/block-gutenberg-pop-up', {
 
 	edit: EditorComponent,
 
-	save: function({ attributes, className }) {
-
-		const styles = {
-			modal: {
-				modalContent: {
-					backgroundColor: attributes.textBackgroundColor,
-					color: attributes.textColor,
-					borderRadius: attributes.borderRadius,
-				},
-				modalHeader: {
-					backgroundColor: attributes.titleBackgroundColor,
-					borderRadius: `${attributes.borderRadius}px ${attributes.borderRadius}px 0 0`,
-				},
-				modalTitle: {
-					color: attributes.titleColor,
-				},
-			},
-			button: {
-				backgroundColor: attributes.buttonColor,
-				color: attributes.buttonTextColor,
-			},
-		}
-
-		return (
-			<div className={ className } style={{display: 'flex', justifyContent: attributes.align}}>
-				<p><button style={styles.button} type="button" className="button" data-toggle="modal" data-target={"#"+attributes.randomKey}>
-					<RichText.Content tagName="span" value={ attributes.buttonText } />
-				</button></p>
-
-				<div className="modal" data-easein={attributes.animation} id={attributes.randomKey} style={{color: attributes.textColor}} tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-					<div className={ "modal-dialog"+attributes.size } role="document">
-						<div className="modal-content" style={ styles.modal.modalContent }>
-							<div className="modal-header" style={ styles.modal.modalHeader }>
-								<h4 className="modal-title" id="myModalLabel" style={ styles.modal.modalTitle }>{attributes.title}</h4>
-								<button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-							</div>
-							<div className="modal-body">
-								<InnerBlocks.Content/>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		);
+	save: function() {
+		return (<InnerBlocks.Content/>);
 	},
 } );
