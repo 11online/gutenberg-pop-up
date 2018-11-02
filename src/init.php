@@ -79,12 +79,7 @@ add_action( 'enqueue_block_editor_assets', 'gutenberg_pop_up_editor_assets' );
  * @param array $attributes
  * @return string
  */
-function renderPopUpBlock( $passedAttributes, $passedContent ) {
-
-	global $attributes;
-	global $content;
-	$content = $passedContent;
-	$attributes = $passedAttributes;
+function renderPopUpBlock( $attributes, $content ) {
 	
 	$buttonStyle = "background-color: " . $attributes['buttonColor'] ."; color: " . $attributes['buttonTextColor'];
 
@@ -96,11 +91,8 @@ function renderPopUpBlock( $passedAttributes, $passedContent ) {
 				
 	$output .= "</button></p></div>";
 
-	add_action('wp_footer', 'append_block_party_modal_content');
-
-	function append_block_party_modal_content() {
-		global $attributes;
-		global $content;
+	// due to some themes having strange z-index issues on the content, we need to put this at the bottom of the page to avoid that. We are using an anonymous function in case there is more than one per page.
+	add_action('wp_footer', function() use ($attributes, $content) {
 
 		$modalContentStyle = "background-color: " . $attributes['textBackgroundColor'] ."; color: " . $attributes['textColor']."; border-radius: " . $attributes['borderRadius'] . "px";
 				
@@ -123,7 +115,7 @@ function renderPopUpBlock( $passedAttributes, $passedContent ) {
 				</div>
 			</div>
     	<?php
-	}	
+	});
 
 	return $output;
 }
@@ -138,7 +130,7 @@ function registerPopUpBlock() {
 		$attributes['title'] 					= ['type' => 'string', 'default' => ''];
 		$attributes['buttonText'] 				= ['type' => 'string', 'default' => "Click Me"];
 		$attributes['align'] 					= ['type' => 'string', 'default' => 'left'];
-		$attributes['randomKey'] 				= ['type' => 'number', 'default' => 'myModal'];
+		$attributes['randomKey'] 				= ['type' => 'string', 'default' => 'myModal'];
 		$attributes['size'] 						= ['type' => 'string', 'default' => ''];
 		$attributes['textBackgroundColor'] 	= ['type' => 'string', 'default' => ''];
 		$attributes['titleBackgroundColor'] = ['type' => 'string', 'default' => ''];
