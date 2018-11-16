@@ -16,7 +16,7 @@ function gutenberg_pop_up_block_assets() {
 	wp_enqueue_script(
 		'gutenberg_pop_up-block-bootstrap-js',
 		plugins_url( '/bootstrap-modal.min.js', dirname( __FILE__ ) ),
-		array( 'wp-blocks', 'wp-i18n', 'wp-element' )
+		array( 'jquery' )
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity',
