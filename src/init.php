@@ -1,10 +1,17 @@
 <?php
+/**
+ * This is a Pop Up Block for the Gutenberg editor
+ *
+ * @package Block Party Pop Up
+ * @since 1.0.0
+ */
 
-// Exit if accessed directly.
+/**
+ * Exit if accessed directly.
+ */
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-
 /**
  * Enqueue Gutenberg block assets for both frontend + backend.
  *
@@ -16,27 +23,36 @@ function gutenberg_pop_up_block_assets() {
 	wp_enqueue_script(
 		'gutenberg_pop_up-block-bootstrap-js',
 		plugins_url( '/bootstrap-modal.min.js', dirname( __FILE__ ) ),
-		array( 'jquery' )
+		array( 'jquery' ),
+		true,
+		true
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity',
 		'//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js',
-		array( 'jquery' )
+		array( 'jquery' ),
+		true,
+		true
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity-ui',
 		'//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.min.js',
-		array( 'jquery', 'block-party-pop-up-velocity' )
+		array( 'jquery', 'block-party-pop-up-velocity' ),
+		true,
+		true
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-animations',
 		plugins_url( '/animations.js', dirname( __FILE__ ) ),
-		array( 'jquery', 'block-party-pop-up-velocity', 'block-party-pop-up-velocity-ui' )
+		array( 'jquery', 'block-party-pop-up-velocity', 'block-party-pop-up-velocity-ui' ),
+		true,
+		true
 	);
 	wp_enqueue_style(
 		'gutenberg_pop_up-block-editor-bootstrap-css',
 		plugins_url( 'bootstrap-modal.css', dirname( __FILE__ ) ),
-		array( 'wp-edit-blocks' )
+		array( 'wp-edit-blocks' ),
+		true
 	);
 }
 
@@ -56,17 +72,23 @@ function gutenberg_pop_up_editor_assets() {
 	wp_enqueue_script(
 		'block-party-pop-up-velocity',
 		'//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js',
-		array( 'jquery' )
+		array( 'jquery' ),
+		true,
+		true
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity-ui',
 		'//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.min.js',
-		array( 'jquery', 'block-party-pop-up-velocity' )
+		array( 'jquery', 'block-party-pop-up-velocity' ),
+		true,
+		true
 	);
 	wp_enqueue_script(
 		'gutenberg_pop_up-block-js',
 		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
-		array( 'wp-blocks', 'wp-i18n', 'wp-element' )
+		array( 'wp-blocks', 'wp-i18n', 'wp-element' ),
+		true,
+		true
 	);
 }
 
@@ -76,16 +98,17 @@ add_action( 'enqueue_block_editor_assets', 'gutenberg_pop_up_editor_assets' );
 /**
  * Render the Pop Up block
  *
- * @param array $attributes
+ * @param array  $attributes Attributes set in the Gutenberg editor.
+ * @param string $content HTML saved in the Gutenberg block save method.
  * @return string
  */
-function renderPopUpBlock( $attributes, $content ) {
+function block_party_render_pop_up_block( $attributes, $content ) {
 
-	$buttonStyle = 'background-color: ' . $attributes['buttonColor'] . '; color: ' . $attributes['buttonTextColor'];
+	$button_style = 'background-color: ' . $attributes['buttonColor'] . '; color: ' . $attributes['buttonTextColor'];
 
-	$output = "<div class='" . $attributes['className'] . "' style='display: flex; justify-content: " . $attributes['align'] . "'>";
+	$output = "<div class='" . esc_attr( $attributes['className'] ) . "' style='display: flex; justify-content: " . esc_attr( $attributes['align'] ) . "'>";
 
-	$output .= "<p><button style='$buttonStyle' type='button' class='button' data-toggle='modal' data-target='#" . $attributes['randomKey'] . "'>";
+	$output .= "<p><button style='" . esc_attr( $button_style ) . "' type='button' class='button' data-toggle='modal' data-target='#" . esc_attr( $attributes['randomKey'] ) . "'>";
 
 	$output .= $attributes['buttonText'];
 
@@ -96,22 +119,22 @@ function renderPopUpBlock( $attributes, $content ) {
 		'wp_footer',
 		function() use ( $attributes, $content ) {
 
-			$modalContentStyle = 'background-color: ' . $attributes['textBackgroundColor'] . '; color: ' . $attributes['textColor'] . '; border-radius: ' . $attributes['borderRadius'] . 'px';
+			$modal_content_style = 'background-color: ' . $attributes['textBackgroundColor'] . '; color: ' . $attributes['textColor'] . '; border-radius: ' . $attributes['borderRadius'] . 'px';
 
-			$modalHeaderStyle = 'background-color: ' . $attributes['titleBackgroundColor'] . '; border-radius: ' . $attributes['borderRadius'] . 'px ' . $attributes['borderRadius'] . 'px 0 0';
+			$modal_header_style = 'background-color: ' . $attributes['titleBackgroundColor'] . '; border-radius: ' . $attributes['borderRadius'] . 'px ' . $attributes['borderRadius'] . 'px 0 0';
 
-			$modalTitleStyle = 'color: ' . $attributes['titleColor'];
+			$modal_title_style = 'color: ' . $attributes['titleColor'];
 
 			?>
-			<div class="modal" data-easein="<?php echo $attributes['animation']; ?>" id="<?php echo $attributes['randomKey']; ?>" style="color: <?php echo $attributes['textColor']; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-				<div class="modal-dialog<?php echo $attributes['size']; ?>" role="document">
-					<div class="modal-content" style="<?php echo $modalContentStyle; ?>">
-						<div class="modal-header" style="<?php echo $modalHeaderStyle; ?>">
-							<h4 class="modal-title" id="myModalLabel" style="<?php echo $modalTitleStyle; ?>"><?php echo $attributes['title']; ?></h4>
+			<div class="modal" data-easein="<?php echo esc_attr( $attributes['animation'] ); ?>" id="<?php echo esc_attr( $attributes['randomKey'] ); ?>" style="color: <?php echo esc_attr( $attributes['textColor'] ); ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+				<div class="modal-dialog<?php echo esc_attr( $attributes['size'] ); ?>" role="document">
+					<div class="modal-content" style="<?php echo esc_attr( $modal_content_style ); ?>">
+						<div class="modal-header" style="<?php echo esc_attr( $modal_header_style ); ?>">
+							<h4 class="modal-title" id="myModalLabel" style="<?php echo esc_attr( $modal_title_style ); ?>"><?php echo esc_html( $attributes['title'] ); ?></h4>
 							<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 						</div>
 						<div class="modal-body">
-							<?php echo $content; ?>
+							<?php echo wp_kses_post( $content ); ?>
 						</div>
 					</div>
 				</div>
@@ -127,7 +150,7 @@ function renderPopUpBlock( $attributes, $content ) {
  *
  * @return void
  */
-function registerPopUpBlock() {
+function block_party_register_pop_up_block() {
 	if ( \function_exists( 'register_block_type' ) ) {
 		$attributes                         = [];
 		$attributes['title']                = [
@@ -186,12 +209,12 @@ function registerPopUpBlock() {
 			'blockparty/block-gutenberg-pop-up',
 			array(
 				'attributes'      => $attributes,
-				'render_callback' => 'renderPopUpBlock',
+				'render_callback' => 'block_party_render_pop_up_block',
 			)
 		);
 	}
 }
-add_action( 'init', 'registerPopUpBlock' );
+add_action( 'init', 'block_party_register_pop_up_block' );
 
 
 
