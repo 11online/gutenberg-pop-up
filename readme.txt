@@ -1,4 +1,4 @@
-Contributors: ericdebelak
+Contributors: 11online, ericdebelak
 Donate link: https://wpblock.party
 Tags: modal, popup, pop up, pop-up
 Requires at least: 4.9.8

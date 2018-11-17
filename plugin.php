@@ -4,7 +4,7 @@
  * Plugin URI: https://wpblock.party/
  * Description: A pop up / modal / pop-up / popup block for the new editor.
  * Author: Block Party
- * Author URI: https://wpblock.party/
+ * Author URI: https://11online.us/
  * Version: 1.0.0
  * License: GPL2+
  * License URI: http://www.gnu.org/licenses/gpl-2.0.txt
