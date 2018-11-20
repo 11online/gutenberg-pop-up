@@ -1,7 +1,7 @@
 Contributors: 11online, ericdebelak
 Donate link: https://wpblock.party
 Tags: modal, popup, pop up, pop-up
-Requires at least: 4.9.8
+Requires at least: 4.9.0
 Tested up to: 4.9.8
 Requires PHP: 5.3.0
 Stable tag: 1.0.0
