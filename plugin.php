@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: Gutenberg Pop Up Block By Block Party
+ * Plugin Name: Pop Up Block
  * Plugin URI: https://wpblock.party/
  * Description: A pop up / modal / pop-up / popup block for the new editor.
  * Author: Block Party

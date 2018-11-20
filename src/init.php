@@ -29,14 +29,14 @@ function gutenberg_pop_up_block_assets() {
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity',
-		'//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js',
+		plugins_url( '/velocity.min.js', dirname( __FILE__ ) ),
 		array( 'jquery' ),
 		true,
 		true
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity-ui',
-		'//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.min.js',
+		plugins_url( '/velocity-ui.min.js', dirname( __FILE__ ) ),
 		array( 'jquery', 'block-party-pop-up-velocity' ),
 		true,
 		true
@@ -71,14 +71,14 @@ function gutenberg_pop_up_editor_assets() {
 	// Scripts.
 	wp_enqueue_script(
 		'block-party-pop-up-velocity',
-		'//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.min.js',
+		plugins_url( '/velocity.min.js', dirname( __FILE__ ) ),
 		array( 'jquery' ),
 		true,
 		true
 	);
 	wp_enqueue_script(
 		'block-party-pop-up-velocity-ui',
-		'//cdnjs.cloudflare.com/ajax/libs/velocity/1.2.2/velocity.ui.min.js',
+		plugins_url( '/velocity-ui.min.js', dirname( __FILE__ ) ),
 		array( 'jquery', 'block-party-pop-up-velocity' ),
 		true,
 		true
