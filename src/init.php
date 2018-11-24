@@ -70,23 +70,9 @@ add_action( 'enqueue_block_assets', 'gutenberg_pop_up_block_assets' );
 function gutenberg_pop_up_editor_assets() {
 	// Scripts.
 	wp_enqueue_script(
-		'block-party-pop-up-velocity',
-		plugins_url( '/velocity.min.js', dirname( __FILE__ ) ),
-		array( 'jquery' ),
-		true,
-		true
-	);
-	wp_enqueue_script(
-		'block-party-pop-up-velocity-ui',
-		plugins_url( '/velocity-ui.min.js', dirname( __FILE__ ) ),
-		array( 'jquery', 'block-party-pop-up-velocity' ),
-		true,
-		true
-	);
-	wp_enqueue_script(
 		'gutenberg_pop_up-block-js',
 		plugins_url( '/dist/blocks.build.js', dirname( __FILE__ ) ),
-		array( 'wp-blocks', 'wp-i18n', 'wp-element' ),
+		array( 'wp-blocks', 'wp-i18n', 'wp-element', 'wp-editor' ),
 		true,
 		true
 	);
