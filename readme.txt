@@ -1,5 +1,5 @@
 === Pop Up Block ===
-Contributors: 11online, ericdebelak, jayrenteria
+Contributors: 11online, ericdebelak, jayrenteria, sparkythehuman
 Donate link: https://wpblock.party
 Tags: modal, popup, pop up, pop-up
 Requires at least: 4.9.0
